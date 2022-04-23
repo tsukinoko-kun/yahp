@@ -14,15 +14,11 @@
   "private": false,
   "dependencies": {
     "@frank-mayer/magic": "^3.2.0",
-    "command-line-args": "^5.2.1",
     "jsdom": "^19.0.0",
     "node-fetch": "^3.2.3"
   },
   "devDependencies": {
-    "@types/command-line-args": "^5.2.0",
-    "@types/jest": "^27.4.1",
     "@types/jsdom": "^16.2.14",
-    "jest": "^27.5.1",
     "typescript": "^4.7.0-dev.20220423"
   }
 }
