@@ -13,7 +13,7 @@ npm i @frank-mayer/yahp
 ```
 
 ```typescript
-import { yahp } from "yahp";
+import { yahp } from "@frank-mayer/yahp";
 import fs from "fs";
 
 const input: string = fs.readFileSync("./src/index.html", "utf8");
