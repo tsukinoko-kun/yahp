@@ -9,7 +9,7 @@ import { varInsert } from "./processHelpers";
  * </for>
  * ```
  */
-export const processFor: IProcess = (el, variables) => {
+export const processFor: IProcess = (el, variables, debug: boolean) => {
   const varName = el.getAttribute("var");
   if (!varName) {
     throw new Error('Missing "var" attribute');
@@ -21,15 +21,25 @@ export const processFor: IProcess = (el, variables) => {
   }
   const ofValue = JSON.parse(ofString);
 
-  if (!Array.isArray(ofValue)) {
-    throw new Error(`"of" attribute must be an array: ${el.outerHTML}`);
+  if (!ofValue[Symbol.iterator]) {
+    throw new Error(
+      `"of" attribute must be iterable: ${JSON.stringify(ofValue)}`
+    );
   }
 
   const newHtml = new StringBuilder();
 
+  let i = 0;
   for (const item of ofValue) {
+    if (debug) {
+      console.debug("loop iteration", i);
+      console.debug(`define ${varName} = `, item);
+    }
+
     variables.set(varName, item);
     newHtml.append(varInsert(el.innerHTML, variables));
+
+    i++;
   }
 
   return Promise.resolve(newHtml.toString());

@@ -6,7 +6,7 @@ import { varInsert } from "./processHelpers";
  * <define var="i" value="1">
  * ```
  */
-export const processDefine: IProcess = (el, variables) => {
+export const processDefine: IProcess = (el, variables, debug: boolean) => {
   const varName = el.getAttribute("var");
   if (!varName) {
     throw new Error('Missing "var" attribute');
@@ -23,6 +23,10 @@ export const processDefine: IProcess = (el, variables) => {
     varValue = JSON.parse(varString);
   } catch {
     varValue = varString;
+  }
+
+  if (debug) {
+    console.debug(`define ${varName} = `, varValue);
   }
 
   variables.set(varName, varValue);

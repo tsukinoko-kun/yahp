@@ -1,4 +1,5 @@
 export type IProcess = (
   el: HTMLElement,
-  variables: Map<string, any>
+  variables: Map<string, any>,
+  debug: boolean
 ) => Promise<string>;
