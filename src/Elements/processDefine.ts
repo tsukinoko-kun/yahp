@@ -1,4 +1,5 @@
 import type { IProcess } from "./IProcess";
+import { varInsert } from "./processHelpers";
 
 /**
  * ```html
@@ -26,5 +27,5 @@ export const processDefine: IProcess = (el, variables) => {
 
   variables.set(varName, varValue);
 
-  return Promise.resolve("");
+  return Promise.resolve(varInsert(el.innerHTML, variables));
 };
