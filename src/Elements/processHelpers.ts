@@ -17,8 +17,8 @@ export const selfClosingTags = new Set([
 
 const varInsertRegex = /\{\{([^}]+)\}\}/g;
 
-export const varInsert = (el: HTMLElement, variables: Map<string, any>) =>
-  el.innerHTML.replace(varInsertRegex, (key) => {
+export const varInsert = (html: string, variables: Map<string, any>) =>
+  html.replace(varInsertRegex, (key) => {
     const expression = key.substring(2, key.length - 2);
 
     try {

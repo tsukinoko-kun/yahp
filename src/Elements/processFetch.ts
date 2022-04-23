@@ -34,5 +34,5 @@ export const processFetch: IProcess = async (el, variables) => {
     variables.set(varName, text);
   }
 
-  return varInsert(el, variables);
+  return varInsert(el.innerHTML, variables);
 };

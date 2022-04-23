@@ -3,10 +3,13 @@ import { Enumerable } from "@frank-mayer/magic";
 import type { IProcess } from "./Elements/IProcess";
 import { processFor } from "./Elements/processFor";
 import { processFetch } from "./Elements/processFetch";
+import { varInsert } from "./Elements/processHelpers";
+import { processDefine } from "./Elements/processDefine";
 
 const processMap = new Map<string, IProcess>([
   ["FOR", processFor],
   ["FETCH", processFetch],
+  ["DEFINE", processDefine],
 ]);
 const selector = Enumerable.from(processMap)
   .select((x) => x[0])
@@ -23,5 +26,7 @@ export const yahp = async (source: string) => {
     el.outerHTML = await fun(el, variables);
   }
 
-  return rootEl.outerHTML.replace(/[\r\n]+^\s*$/gm, "").replace(/^\s+/gm, "");
+  return varInsert(rootEl.outerHTML, variables)
+    .replace(/[\r\n]+^\s*$/gm, "")
+    .replace(/^\s+/gm, "");
 };

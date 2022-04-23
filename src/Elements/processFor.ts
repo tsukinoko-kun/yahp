@@ -29,7 +29,7 @@ export const processFor: IProcess = (el, variables) => {
 
   for (const item of ofValue) {
     variables.set(varName, item);
-    newHtml.append(varInsert(el, variables));
+    newHtml.append(varInsert(el.innerHTML, variables));
   }
 
   return Promise.resolve(newHtml.toString());
