@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <define var="arr" value="[1,2,3]">
+      <fetch json var="dog" url="https://dog.ceo/api/breeds/image/random">
+        <img src="{{dog.message}}" />
+      </fetch>
+
+      <for var="item" of="{{arr}}">
+        <div>{{item}}</div>
+      </for>
+    </define>
+  </body>
+</html>

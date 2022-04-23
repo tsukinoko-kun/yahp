@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p ./tsconfig.json",
-    "test": "jest --verbose --ci --expand --logHeapUsage --passWithNoTests"
+    "test": "node --experimental-specifier-resolution=node ./__test__/test.js"
   },
   "repository": "https://github.com/Frank-Mayer/yahp.git",
   "author": "Frank Mayer <frank.mayer1907@protonmail.com>",
