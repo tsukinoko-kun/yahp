@@ -1,3 +1,9 @@
+# TypeScript
+*.js
+*.d.ts
+!__test__/***.js
+!*.config.js
+
 # Logs
 logs
 *.log
