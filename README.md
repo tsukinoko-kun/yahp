@@ -1,6 +1,25 @@
 # yahp
 
-Yet another HTML preprocessor
+Yet another HTML preprocessor (for Node)
+
+## Quickstart Guide
+
+```bash
+yarn add @frank-mayer/yahp
+```
+
+```bash
+npm i @frank-mayer/yahp
+```
+
+```typescript
+import { yahp } from "yahp";
+import fs from "fs";
+
+const input: string = fs.readFileSync("./src/index.html", "utf8");
+const output: string = await yahp(input);
+fs.writeFileSync("./dist/index.html", output);
+```
 
 ## Variables
 
