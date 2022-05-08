@@ -1,2 +1,5 @@
 __test__/
 src/
+.gitignore
+.gitattributes
+tsconfig.json
