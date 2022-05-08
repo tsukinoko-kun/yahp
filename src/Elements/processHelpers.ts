@@ -15,7 +15,7 @@ export const selfClosingTags = new Set([
   "WBR",
 ]);
 
-const varInsertRegex = /\{\{([^}]+)\}\}/g;
+const varInsertRegex = /\{\{(?:(?!:\}\}).)+\}\}/g;
 
 export const varInsert = (html: string, variables: Map<string, any>) =>
   html.replace(varInsertRegex, (key) => {

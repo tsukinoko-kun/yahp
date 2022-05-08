@@ -6,12 +6,14 @@ import { processFor } from "./Elements/processFor";
 import { processFetch } from "./Elements/processFetch";
 import { processDefine } from "./Elements/processDefine";
 import { processIf } from "./Elements/processIf";
+import { processImport } from "./Elements/processImport";
 
 const processMap = new Map<string, IProcess>([
   ["DEFINE", processDefine],
   ["FETCH", processFetch],
   ["FOR", processFor],
   ["IF", processIf],
+  ["IMPORT", processImport],
 ]);
 
 const selector = Enumerable.from(processMap)

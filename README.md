@@ -110,10 +110,22 @@ Use the `if` Tag to check if a condition is truthy or falsy.
 
 The `<fetch>` Tag allows fetching resources across the network.
 
-If you want the fetch response to be interpreted as JSON, use the json switch attribute.
+If you want the fetch response to be interpreted as JSON, use the `json` switch attribute.
 
 ```html
 <fetch json var="dog" url="https://dog.ceo/api/breeds/image/random">
   <img src="{{dog.message}}" />
 </fetch>
+```
+
+### Import
+
+The `<import>` Tag allows to import Modules dynamically.
+
+```html
+<import var="{join}" from="path">{{join("a",'b',`c`)}}</import>
+```
+
+```html
+a/b/c
 ```
