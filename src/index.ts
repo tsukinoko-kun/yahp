@@ -32,7 +32,7 @@ const stringifyHtml = (el: HTMLElement): string => {
           }
           break;
         case Node.ELEMENT_NODE:
-          outSB.append(stringifyHtml(child as HTMLElement));
+          outSB.append(stringifyHtml(child as HTMLElement).trim());
           break;
         case Node.COMMENT_NODE:
           outSB.append(`<!--${child.textContent}-->`);
@@ -71,9 +71,12 @@ export const yahp = async (source: string, debug: boolean = false) => {
     el.outerHTML = await fun(el, variables, debug);
   }
 
-  if (doctypeString) {
-    return doctypeString + "\n" + stringifyHtml(rootEl) + "\n";
-  } else {
-    return stringifyHtml(rootEl) + "\n";
-  }
+  return (
+    (doctypeString
+      ? doctypeString + "\n" + stringifyHtml(rootEl)
+      : stringifyHtml(rootEl)
+    )
+      .replace(/^\s+$\n/gm, "")
+      .replace(/^\s+/gm, "") + "\n"
+  );
 };

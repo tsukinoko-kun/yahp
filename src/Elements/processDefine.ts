@@ -1,5 +1,5 @@
 import type { IProcess } from "./IProcess";
-import { varInsert } from "./processHelpers";
+import { AsyncFunction, varInsert } from "./processHelpers";
 
 /**
  * ```html
@@ -24,10 +24,10 @@ export const processDefine: IProcess = async (
   let varValue: any = undefined;
 
   try {
-    varValue = await Function(
+    varValue = await AsyncFunction(
       ...variables.keys(),
-      `return (${varString});`
-    )(...variables.values()).catch(() => (varValue = varString));
+      `return await (${varString});`
+    )(...variables.values());
   } catch {
     varValue = varString;
   }

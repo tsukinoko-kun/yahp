@@ -17,7 +17,7 @@ export const selfClosingTags = new Set([
   "WBR",
 ]);
 
-const AsyncFunction: <T = any>(
+export const AsyncFunction: <T = any>(
   ...args: Array<string>
 ) => (...args: Array<any>) => Promise<T> = Object.getPrototypeOf(
   async function () {}

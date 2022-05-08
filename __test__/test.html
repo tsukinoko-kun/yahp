@@ -7,6 +7,32 @@
     <title>Document</title>
   </head>
   <body>
-    <import var="{Magic}" from="./magic.js"> {{ new Magic() }} </import>
+    <define var="arr" value="[1,2,3]">
+      <fetch json var="dog" from="https://dog.ceo/api/breeds/image/random">
+        <img id="dog" src="{{Promise.resolve(dog.message)}}" />
+      </fetch>
+
+      <for var="item" of="{{arr}}">
+        <div>{{item}}</div>
+      </for>
+
+      <for var="item" of='"meep"'>
+        <div>{{item}}</div>
+      </for>
+    </define>
+
+    <define var="b" value="{{Boolean(Math.round(Math.random()))}}">
+      <if condition="{{b}}">
+        <div>true</div>
+      </if>
+      <if not condition="{{b}}">
+        <div>false</div>
+      </if>
+    </define>
+    <span
+      style="{{'color:#'+Math.floor(Math.random()*0xffffff).toString(16).padStart(6, '0')}}"
+    >
+      Random Color
+    </span>
   </body>
 </html>
