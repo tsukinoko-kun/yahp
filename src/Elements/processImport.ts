@@ -1,5 +1,6 @@
 import type { IProcess } from "./IProcess";
 import { varInsert } from "./processHelpers";
+import { resolve } from "path";
 
 const loadModule = (id: string): Promise<any> => {
   if ("require" in globalThis) {
@@ -26,9 +27,13 @@ export const processImport: IProcess = async (
     throw new Error('Missing "var" attribute');
   }
 
-  const from = el.getAttribute("from");
+  let from = el.getAttribute("from");
   if (!from) {
     throw new Error('Missing "from" attribute');
+  }
+
+  if (from.startsWith(".")) {
+    from = resolve(from);
   }
 
   if (debug) {
@@ -45,12 +50,16 @@ export const processImport: IProcess = async (
     if (varNames.length !== 0) {
       const module = await loadModule(from);
       for (const key of varNames) {
-        console.debug(`import { ${key} } from "${from}";`);
+        if (debug) {
+          console.debug(`import { ${key} } from "${from}";`);
+        }
         variables.set(key, module[key]);
       }
     }
   } else {
-    console.debug(`import ${varName} from "${from}";`);
+    if (debug) {
+      console.debug(`import ${varName} from "${from}";`);
+    }
     variables.set(varName, await loadModule(from));
   }
 
