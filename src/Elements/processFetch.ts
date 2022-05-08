@@ -20,21 +20,23 @@ export const processFetch: IProcess = async (el, variables, debug: boolean) => {
     throw new Error('Missing "from" attribute');
   }
 
-  console.debug("processFetch", from);
+  if (debug) {
+    console.debug("processFetch", from);
+  }
 
   const response = await fetch(from);
 
   if (el.hasAttribute("json")) {
     const json = await response.json();
-    console.debug("processFetch", json);
     if (debug) {
+      console.debug("processFetch", json);
       console.debug(`define ${varName} = `, json);
     }
     variables.set(varName, json);
   } else {
     const text = await response.text();
-    console.debug("processFetch", text);
     if (debug) {
+      console.debug("processFetch", text);
       console.debug(`define ${varName} = ${text}`);
     }
     variables.set(varName, text);
