@@ -1,5 +1,5 @@
 import { JSDOM } from "jsdom";
-import { Enumerable, StringBuilder } from "@frank-mayer/magic";
+import { Enumerable, StringBuilder, describe } from "@frank-mayer/magic";
 import type { IProcess } from "./Elements/IProcess";
 import { varInsert, Node } from "./Elements/processHelpers";
 import { processFor } from "./Elements/processFor";
@@ -23,25 +23,27 @@ const selector = Enumerable.from(processMap)
 const stringifyHtml = (el: HTMLElement): string => {
   if (el.childElementCount !== 0) {
     const outSB = new StringBuilder();
+    outSB.append(describe(el));
     for (const child of el.childNodes) {
       switch (child.nodeType) {
         case Node.TEXT_NODE:
-          const text = child.textContent?.trim();
+          const text = child.textContent;
           if (text) {
             outSB.append(text);
           }
           break;
         case Node.ELEMENT_NODE:
-          outSB.append(stringifyHtml(child as HTMLElement).trim());
+          outSB.append(stringifyHtml(child as HTMLElement));
           break;
         case Node.COMMENT_NODE:
           outSB.append(`<!--${child.textContent}-->`);
           break;
       }
     }
+    outSB.append(`</${el.tagName}>`);
     return outSB.toString();
   } else {
-    return el.outerHTML.trim();
+    return el.outerHTML;
   }
 };
 
@@ -73,10 +75,10 @@ export const yahp = async (source: string, debug: boolean = false) => {
 
   return (
     (doctypeString
-      ? doctypeString + "\n" + stringifyHtml(rootEl)
-      : stringifyHtml(rootEl)
-    )
-      .replace(/^\s+$\n/gm, "")
-      .replace(/^\s+/gm, "") + "\n"
+      ? doctypeString +
+        "\n" +
+        (await varInsert(stringifyHtml(rootEl), variables))
+      : await varInsert(stringifyHtml(rootEl), variables)
+    ).replace(/^\s+$\n/gm, "") + "\n"
   );
 };

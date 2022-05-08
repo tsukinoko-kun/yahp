@@ -42,7 +42,16 @@ export const varInsert = async (html: string, variables: Map<string, any>) => {
           ...variables.keys(),
           `const val = await (${expression}); return typeof val === "string" ? val : typeof val === "undefined" ? "" : JSON.stringify(val);`
         )(...variables.values())
-          .then((val) => newHtml.append(val))
+          .then((val) =>
+            newHtml.append(
+              val
+                .replace(/&/g, "&amp;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+            )
+          )
           .catch((_) => newHtml.append(`{{${expression}}}`));
       } catch {
         newHtml.append(`{{${expression}}}`);
