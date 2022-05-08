@@ -6,7 +6,11 @@ import { varInsert } from "./processHelpers";
  * <define var="i" value="1">
  * ```
  */
-export const processDefine: IProcess = (el, variables, debug: boolean) => {
+export const processDefine: IProcess = async (
+  el,
+  variables,
+  debug: boolean
+) => {
   const varName = el.getAttribute("var");
   if (!varName) {
     throw new Error('Missing "var" attribute');
@@ -20,7 +24,10 @@ export const processDefine: IProcess = (el, variables, debug: boolean) => {
   let varValue: any = undefined;
 
   try {
-    varValue = JSON.parse(varString);
+    varValue = await Function(
+      ...variables.keys(),
+      `return (${varString});`
+    )(...variables.values()).catch(() => (varValue = varString));
   } catch {
     varValue = varString;
   }
