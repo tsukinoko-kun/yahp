@@ -31,5 +31,5 @@ export const processDefine: IProcess = (el, variables, debug: boolean) => {
 
   variables.set(varName, varValue);
 
-  return Promise.resolve(varInsert(el.innerHTML, variables));
+  return varInsert(el.innerHTML, variables);
 };

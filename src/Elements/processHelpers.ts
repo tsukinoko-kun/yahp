@@ -1,3 +1,5 @@
+import { StringBuilder } from "@frank-mayer/magic";
+
 export const selfClosingTags = new Set([
   "AREA",
   "BASE",
@@ -15,21 +17,43 @@ export const selfClosingTags = new Set([
   "WBR",
 ]);
 
-const varInsertRegex = /\{\{(?:(?!:\}\}).)+\}\}/g;
+const AsyncFunction: <T = any>(
+  ...args: Array<string>
+) => (...args: Array<any>) => Promise<T> = Object.getPrototypeOf(
+  async function () {}
+).constructor;
 
-export const varInsert = (html: string, variables: Map<string, any>) =>
-  html.replace(varInsertRegex, (key) => {
-    const expression = key.substring(2, key.length - 2);
+export const varInsert = async (html: string, variables: Map<string, any>) => {
+  const newHtml = new StringBuilder();
 
-    try {
-      return Function(
-        ...variables.keys(),
-        `const val = (${expression}); return typeof val === "string" ? val : typeof val === "undefined" ? "" : JSON.stringify(val);`
-      )(...variables.values());
-    } catch {
-      return key;
+  const split = html
+    .split("{{")
+    .map((x) => x.split("}}"))
+    .flat();
+
+  let i = 0;
+  while (split.length !== 0) {
+    if (i % 2 === 0) {
+      newHtml.append(split.shift()!);
+    } else {
+      const expression = split.shift()!;
+      try {
+        await AsyncFunction(
+          ...variables.keys(),
+          `const val = await (${expression}); return typeof val === "string" ? val : typeof val === "undefined" ? "" : JSON.stringify(val);`
+        )(...variables.values())
+          .then((val) => newHtml.append(val))
+          .catch((_) => newHtml.append(`{{${expression}}}`));
+      } catch {
+        newHtml.append(`{{${expression}}}`);
+      }
     }
-  });
+
+    i++;
+  }
+
+  return newHtml.toString();
+};
 
 export enum Node {
   ELEMENT_NODE = 1,

@@ -47,7 +47,7 @@ const stringifyHtml = (el: HTMLElement): string => {
 
 export const yahp = async (source: string, debug: boolean = false) => {
   const variables = new Map<string, any>();
-  const dom = new JSDOM(varInsert(source, variables));
+  const dom = new JSDOM(await varInsert(source, variables));
 
   const rootEl = dom.window.document.documentElement;
   const doctype = dom.window.document.doctype;

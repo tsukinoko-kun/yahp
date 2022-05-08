@@ -9,7 +9,7 @@
   <body>
     <define var="arr" value="[1,2,3]">
       <fetch json var="dog" from="https://dog.ceo/api/breeds/image/random">
-        <img src="{{dog.message}}" />
+        <img id="dog" src="{{Promise.resolve(dog.message)}}" />
       </fetch>
 
       <for var="item" of="{{arr}}">

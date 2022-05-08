@@ -9,7 +9,7 @@ import { varInsert } from "./processHelpers";
  * </for>
  * ```
  */
-export const processFor: IProcess = (el, variables, debug: boolean) => {
+export const processFor: IProcess = async (el, variables, debug: boolean) => {
   const varName = el.getAttribute("var");
   if (!varName) {
     throw new Error('Missing "var" attribute');
@@ -37,10 +37,10 @@ export const processFor: IProcess = (el, variables, debug: boolean) => {
     }
 
     variables.set(varName, item);
-    newHtml.append(varInsert(el.innerHTML, variables));
+    newHtml.append(await varInsert(el.innerHTML, variables));
 
     i++;
   }
 
-  return Promise.resolve(newHtml.toString());
+  return newHtml.toString();
 };

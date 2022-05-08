@@ -45,6 +45,8 @@ Use double curly braces to write JavaScript expressions.
 
 If an expression equals to `undefined`, it will not be rendered.
 
+Expressions can use async/await.
+
 ```html
 <span
   style="color:{{'#'+Math.floor(Math.random()*0xffffff).toString(16).padStart(6,'0')}}"

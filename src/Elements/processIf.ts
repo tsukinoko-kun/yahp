@@ -24,7 +24,7 @@ export const processIf: IProcess = (el, variables, debug: boolean) => {
     if (debug) {
       console.debug(`if ${conditionString}: true`);
     }
-    return Promise.resolve(varInsert(el.innerHTML, variables));
+    return varInsert(el.innerHTML, variables);
   } else {
     if (debug) {
       console.debug(`if ${conditionString}: false`);
