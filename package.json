@@ -1,6 +1,6 @@
 {
   "name": "@frank-mayer/yahp",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Yet another HTML preprocessor",
   "main": "index.js",
   "type": "module",
