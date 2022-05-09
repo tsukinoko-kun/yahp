@@ -1,42 +1,34 @@
 import type { IProcess } from "./IProcess";
-import { AsyncFunction, varInsert } from "./processHelpers";
+import { evaluate, get, parseArgs, set } from "./helpers";
+import { process } from "../process";
 
 /**
  * ```html
  * <define var="i" value="1">
  * ```
  */
-export const processDefine: IProcess = async (
-  el,
-  variables,
-  debug: boolean
-) => {
-  const varName = el.getAttribute("var");
-  if (!varName) {
-    throw new Error('Missing "var" attribute');
-  }
-
-  const varString = el.getAttribute("value");
-  if (!varString) {
-    throw new Error('Missing "value" attribute');
-  }
-
-  let varValue: any = undefined;
-
-  try {
-    varValue = await AsyncFunction(
-      ...variables.keys(),
-      `return await (${varString});`
-    )(...variables.values());
-  } catch {
-    varValue = varString;
-  }
+export const processDefine: IProcess = async (el, debug: boolean) => {
+  const args = parseArgs(el, "var", "value");
 
   if (debug) {
-    console.debug(`define ${varName} = `, varValue);
+    console.debug({ args });
   }
 
-  variables.set(varName, varValue);
+  const value = await evaluate(args.value);
 
-  return varInsert(el.innerHTML, variables);
+  if (debug) {
+    console.debug({ value });
+  }
+
+  const temp = get(args.var);
+
+  set(args.var, value);
+
+  for (const childEl of Array.from(el.children)) {
+    await process(childEl, debug);
+  }
+
+  set(args.var, temp);
+
+  el.outerHTML = el.innerHTML;
 };

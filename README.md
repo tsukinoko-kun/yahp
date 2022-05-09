@@ -45,7 +45,7 @@ Use double curly braces to write JavaScript expressions.
 
 If an expression equals to `undefined`, it will not be rendered.
 
-Expressions can use async/await.
+Expressions can **not** use async/await.
 
 ```html
 <span
@@ -91,6 +91,12 @@ The `<define>` Tag defines a variable.
     </for>
   </ul>
 </define>
+```
+
+You can also await if the value returns a `Promise`
+
+```html
+<define var="arr" await value="fetch('https://github.com')"></define>
 ```
 
 ### If

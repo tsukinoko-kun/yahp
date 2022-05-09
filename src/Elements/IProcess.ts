@@ -1,5 +1,1 @@
-export type IProcess = (
-  el: HTMLElement,
-  variables: Map<string, any>,
-  debug: boolean
-) => Promise<string>;
+export type IProcess = (el: HTMLElement, debug: boolean) => Promise<void>;
