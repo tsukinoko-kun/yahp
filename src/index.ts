@@ -8,7 +8,6 @@ import { processFetch } from "./Elements/processFetch";
 import { processFor } from "./Elements/processFor";
 import { processIf } from "./Elements/processIf";
 import { processImport } from "./Elements/processImport";
-import { describe } from "@frank-mayer/magic";
 
 const processMap = new Map<string, IProcess>([
   ["DEFINE", processDefine],
@@ -19,15 +18,14 @@ const processMap = new Map<string, IProcess>([
   ["IMPORT", processImport],
 ]);
 
+// eslint-disable-next-line no-undef
 (globalThis as any).processMap = processMap;
 
-export const yahp = async (source: string, debug: boolean = false) => {
+export const yahp = async(source: string, debug = false) => {
   const dom = new JSDOM(source);
 
   const document = dom.window.document;
   const rootEl = document.documentElement;
-
-  console.debug(describe(rootEl));
 
   await process(rootEl, debug);
 

@@ -7,7 +7,7 @@ import { process } from "../process";
  * <define var="i" value="1">
  * ```
  */
-export const processDefine: IProcess = async (el, debug: boolean) => {
+export const processDefine: IProcess = async(el, debug: boolean) => {
   const args = parseArgs(el, "var", "value");
 
   if (debug) {
@@ -24,9 +24,7 @@ export const processDefine: IProcess = async (el, debug: boolean) => {
 
   set(args.var, value);
 
-  for (const childEl of Array.from(el.children)) {
-    await process(childEl, debug);
-  }
+  await process(el, debug);
 
   set(args.var, temp);
 

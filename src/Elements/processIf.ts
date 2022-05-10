@@ -12,7 +12,7 @@ import { process } from "../process";
  * </else>
  * ```
  */
-export const processIf: IProcess = async (el, debug: boolean) => {
+export const processIf: IProcess = async(el, debug: boolean) => {
   const args = parseArgs(el, "condition");
 
   if (debug) {
@@ -22,9 +22,7 @@ export const processIf: IProcess = async (el, debug: boolean) => {
   const elseEl = el.nextElementSibling;
 
   if (await evaluate(args.condition)) {
-    for (const childEl of Array.from(el.children)) {
-      await process(childEl, debug);
-    }
+    await process(el, debug);
 
     if (elseEl) {
       elseEl.remove();
@@ -32,9 +30,7 @@ export const processIf: IProcess = async (el, debug: boolean) => {
 
     el.outerHTML = el.innerHTML;
   } else if (elseEl && elseEl.tagName === "ELSE") {
-    for (const childEl of Array.from(elseEl.children)) {
-      await process(childEl, debug);
-    }
+    await process(el, debug);
 
     el.outerHTML = elseEl.innerHTML;
 

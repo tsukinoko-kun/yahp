@@ -9,12 +9,12 @@ import { evaluate } from "./helpers";
  * </script>
  * ```
  */
-export const processEval: IProcess = async (el, debug: boolean) => {
+export const processEval: IProcess = async(el, debug: boolean) => {
   if (!el.hasAttribute("eval")) {
     return;
   }
 
-  const value = await evaluate((el as HTMLScriptElement).text);
+  const value = await evaluate((el as HTMLScriptElement).text, false);
 
   if (debug) {
     console.debug({ value });

@@ -15,7 +15,7 @@ import { parseArgs, set } from "./helpers";
  *  </fetch>
  * ```
  */
-export const processFetch: IProcess = async (el, debug: boolean) => {
+export const processFetch: IProcess = async(el, debug: boolean) => {
   const args = parseArgs(el, "var", "as", "from");
 
   if (debug) {

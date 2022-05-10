@@ -4,6 +4,7 @@ import { process } from "../process";
 import { resolve } from "path";
 
 const loadModule = (id: string): Promise<any> => {
+  // eslint-disable-next-line no-undef
   if ("require" in globalThis) {
     return Function(`return Promise.resolve(require("${id}"))`)();
   } else {
@@ -18,7 +19,7 @@ const loadModule = (id: string): Promise<any> => {
  *  </require>
  * ```
  */
-export const processImport: IProcess = async (el, debug: boolean) => {
+export const processImport: IProcess = async(el, debug: boolean) => {
   const args = parseArgs(el, "var", "from");
 
   if (debug) {
@@ -33,9 +34,7 @@ export const processImport: IProcess = async (el, debug: boolean) => {
 
   set(args.var, await loadModule(args.from));
 
-  for (const childEl of Array.from(el.children)) {
-    await process(childEl, debug);
-  }
+  await process(el, debug);
 
   set(args.var, temp);
 

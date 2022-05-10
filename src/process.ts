@@ -3,7 +3,7 @@ import type { IProcess } from "./Elements/IProcess";
 
 declare const processMap: ReadonlyMap<string, IProcess>;
 
-export const process = async (rootEl: Element, debug: boolean = false) => {
+export const process = async(rootEl: Element, debug = false) => {
   const selector = Enumerable.from(processMap)
     .select((x) => x[0])
     .join(",");
@@ -12,6 +12,7 @@ export const process = async (rootEl: Element, debug: boolean = false) => {
   while ((el = rootEl.querySelector(selector))) {
     if (debug) {
       console.debug(`Processing ${describe(el)}`);
+      // console.debug("var", getDomThis());
     }
 
     const fun = processMap.get(el.tagName)!;

@@ -19,23 +19,28 @@ export const selfClosingTags = new Set([
 
 const domThis = {} as { [key: string]: any };
 
+export const getDomThis = (): Readonly<typeof domThis> => domThis;
+
 export const AsyncFunction: <T = any>(
   ...args: Array<string>
+// eslint-disable-next-line no-shadow
 ) => (...args: Array<any>) => Promise<T> = Object.getPrototypeOf(
-  async function () {}
+  // eslint-disable-next-line no-empty-function, @typescript-eslint/no-empty-function
+  async function() {}
 ).constructor;
 
-export const parseArgs = <arg extends string>(
+// eslint-disable-next-line no-unused-vars
+export const parseArgs = <A extends string, T extends { [key in A]: string }>(
   el: Element,
-  ...args: Array<arg>
-): { [key in arg]: string } => {
-  const result = {} as { [key in arg]: string };
+  ...args: Array<A>
+): T => {
+  const result = {} as T;
 
   for (const arg of args) {
     if (el.hasAttribute(arg)) {
       const value = el.getAttribute(arg)!.trim();
       if (value.length > 0) {
-        result[arg] = value;
+        result[arg] = value as T[A];
       } else {
         throw new Error(`${arg} is empty in ${describe(el)}`);
       }
@@ -47,25 +52,27 @@ export const parseArgs = <arg extends string>(
   return result;
 };
 
-function evalInContext(x: string) {
-  return eval(x);
-}
+// async function evalInContext(x: string) {
+//   return eval(x);
+// }
 
-export const evaluate = async (x: string) =>
-  await evalInContext.call(domThis, x);
+export const evaluate = (x: string, statement = true) =>
+  statement
+    ? AsyncFunction(`return (${x})`).call(domThis)
+    : AsyncFunction(x).call(domThis);
 
 const variableNameRegEx = /^[a-zßöäü$][a-zßöäü$]*$/iu;
 export const set = (key: string, value: any) => {
   if (key.startsWith("{") && key.endsWith("}")) {
-    const keys = Enumerable.from(key.slice(1, -1).split(","))
+    const subKeys = Enumerable.from(key.slice(1, -1).split(","))
       .select((x) => x.trim())
       .where((x) => x.length > 0);
 
-    for (const key of keys) {
-      if (variableNameRegEx.test(key)) {
-        domThis[key] = value[key];
+    for (const subKey of subKeys) {
+      if (variableNameRegEx.test(subKey)) {
+        domThis[subKey] = value[subKey];
       } else {
-        throw new Error(`Invalid variable name ${key}`);
+        throw new Error(`Invalid variable name ${subKey}`);
       }
     }
   } else {
@@ -79,14 +86,14 @@ export const set = (key: string, value: any) => {
 
 export const get = (key: string) => {
   if (key.startsWith("{") && key.endsWith("}")) {
-    const keys = Enumerable.from(key.slice(1, -1).split(","))
+    const subKeys = Enumerable.from(key.slice(1, -1).split(","))
       .select((x) => x.trim())
       .where((x) => x.length > 0);
 
-    const result = {} as { [key in string]: any };
-    for (const key of keys) {
-      if (variableNameRegEx.test(key)) {
-        result[key] = domThis[key];
+    const result = {} as { [key: string]: any };
+    for (const subKey of subKeys) {
+      if (variableNameRegEx.test(subKey)) {
+        result[subKey] = domThis[subKey];
       }
     }
     return result;
@@ -99,18 +106,3 @@ export const get = (key: string) => {
   }
 };
 
-export enum Node {
-  ELEMENT_NODE = 1,
-  ATTRIBUTE_NODE = 2,
-  TEXT_NODE = 3,
-  CDATA_SECTION_NODE = 4,
-  ENTITY_REFERENCE_NODE = 5,
-  ENTITY_NODE = 6,
-  PROCESSING_INSTRUCTION_NODE = 7,
-  COMMENT_NODE = 8,
-  DOCUMENT_NODE = 9,
-  DOCUMENT_TYPE_NODE = 10,
-  DOCUMENT_FRAGMENT_NODE = 11,
-  NOTATION_NODE = 12,
-  DOCUMENT_POSITION_CONTAINED_BY = 16,
-}
