@@ -4,7 +4,9 @@ import { process } from "../process";
 
 /**
  * ```html
- * <define var="i" value="1">
+ * <define var="i" value="42">
+ *   ...
+ * </define>
  * ```
  */
 export const processDefine: IProcess = async(el, debug: boolean) => {
@@ -21,11 +23,8 @@ export const processDefine: IProcess = async(el, debug: boolean) => {
   }
 
   const temp = get(args.var);
-
   set(args.var, value);
-
   await process(el, debug);
-
   set(args.var, temp);
 
   el.outerHTML = el.innerHTML;

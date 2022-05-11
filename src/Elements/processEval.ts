@@ -5,7 +5,7 @@ import { evaluate } from "./helpers";
  * ```html
  * <script eval>
  *   const r = Math.random() * 100;
- *   r.toFixed(2);
+ *   return r.toFixed(2);
  * </script>
  * ```
  */

@@ -6,7 +6,7 @@ import { StringBuilder } from "@frank-mayer/magic";
 /**
  * ```html
  * <for var="item" of="[1,2,3]">
- *  <div>{{item}}</div>
+ *   ...
  * </for>
  * ```
  */

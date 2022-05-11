@@ -1,17 +1,18 @@
 import fetch from "node-fetch";
 import type { IProcess } from "./IProcess";
-import { parseArgs, set } from "./helpers";
+import { evaluate, get, parseArgs, set } from "./helpers";
+import { process } from "../process";
 
 /**
  * ```html
- *  <fetch var="dog" as="json" from="https://dog.ceo/api/breeds/image/random">
- *   <img src="{{dog.message}}" />
+ *  <fetch var="dog" as="json" from="this.dogImgUrl">
+ *    ...
  *  </fetch>
  * ```
  *
  * ```html
- *  <fetch var="dog" as="text" from="https://dog.ceo/api/breeds/image/random">
- *   <pre>{{dog}}</pre>
+ *  <fetch var="dog" as="text" from="this.dogImgUrl">
+ *    ...
  *  </fetch>
  * ```
  */
@@ -22,7 +23,7 @@ export const processFetch: IProcess = async(el, debug: boolean) => {
     console.debug({ args });
   }
 
-  const resp = await fetch(args.from);
+  const resp = await fetch(await evaluate(args.from));
 
   const value: any = args.as === "json" ? await resp.json() : await resp.text();
 
@@ -30,7 +31,10 @@ export const processFetch: IProcess = async(el, debug: boolean) => {
     console.debug({ value });
   }
 
+  const temp = get(args.var);
   set(args.var, value);
+  await process(el, debug);
+  set(args.var, temp);
 
   el.outerHTML = el.innerHTML;
 };

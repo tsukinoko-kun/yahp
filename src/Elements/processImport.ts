@@ -14,9 +14,9 @@ const loadModule = (id: string): Promise<any> => {
 
 /**
  * ```html
- *  <require var="{ Octokit }" from="@octokit/rest">
- *
- *  </require>
+ *  <import var="{ Octokit }" from="@octokit/rest">
+ *    ...
+ *  </import>
  * ```
  */
 export const processImport: IProcess = async(el, debug: boolean) => {
@@ -31,11 +31,8 @@ export const processImport: IProcess = async(el, debug: boolean) => {
   }
 
   const temp = get(args.var);
-
   set(args.var, await loadModule(args.from));
-
   await process(el, debug);
-
   set(args.var, temp);
 
   el.outerHTML = el.innerHTML;

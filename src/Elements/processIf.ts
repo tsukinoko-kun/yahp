@@ -5,10 +5,10 @@ import { process } from "../process";
 /**
  * ```html
  * <if condition="Boolean(Math.round(Math.random()))">
- *  <p>true</p>
+ *   <p>true</p>
  * </if>
  * <else>
- *  <p>false</p>
+ *   <p>false</p>
  * </else>
  * ```
  */
