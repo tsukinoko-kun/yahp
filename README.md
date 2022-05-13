@@ -1,5 +1,7 @@
 # yahp
 
+[![yarn 3](https://shields.io/badge/yarn-3-2C8EBB?logo=yarn)](https://yarnpkg.com)
+
 Yet another HTML preprocessor (for Node)
 
 ## Quickstart Guide
