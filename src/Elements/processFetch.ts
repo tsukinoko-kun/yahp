@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
-import type { IProcess } from "./IProcess";
-import { evaluate, get, parseArgs, set } from "./helpers";
-import { process } from "../process";
+import type { IProcess } from "./IProcess.js";
+import { evaluate, get, parseArgs, set } from "./helpers.js";
+import { process } from "../process.js";
 
 /**
  * ```html

@@ -1,5 +1,5 @@
-import type { IProcess } from "./IProcess";
-import { evaluate } from "./helpers";
+import type { IProcess } from "./IProcess.js";
+import { evaluate } from "./helpers.js";
 
 /**
  * ```html

@@ -1,5 +1,5 @@
 import { describe, Enumerable } from "@frank-mayer/magic";
-import type { IProcess } from "./Elements/IProcess";
+import type { IProcess } from "./Elements/IProcess.js";
 
 declare const processMap: ReadonlyMap<string, IProcess>;
 

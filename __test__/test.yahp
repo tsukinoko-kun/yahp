@@ -7,38 +7,10 @@
     <title>Document</title>
   </head>
   <body>
-    <import var="{Octokit}" from="@octokit/rest">
-      <define
-        var="octokit"
-        value="new this.Octokit({auth: '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'})"
-      >
-        <define
-          var="project"
-          value="(await this.octokit.projects.get({ project_id: 14438918 })).data"
-        >
-          <script eval>
-            return `<h2>${this.project.name}</h2>`;
-          </script>
-          <p>
-            Zuletzt aktualisiert:
-            <script eval>
-              return new Date(this.project.updated_at).toLocaleString("de-DE");
-            </script>
-          </p>
-          <div id="project">
-            <for
-              var="column"
-              of="(await this.octokit.projects.listColumns({ project_id: 14438918 })).data"
-            >
-              <div class="column">
-                <script eval>
-                  return `<b>${this.column.name}</b>`;
-                </script>
-              </div>
-            </for>
-          </div>
-        </define>
-      </define>
-    </import>
+    <for var="item" of="[1,2,3]">
+      <script eval>
+        return this.item;
+      </script>
+    </for>
   </body>
 </html>

@@ -1,5 +1,6 @@
 {
   "name": "@frank-mayer/yahp",
+  "packageManager": "yarn@3.2.0",
   "version": "0.1.7",
   "description": "Yet another HTML preprocessor",
   "main": "index.js",
@@ -12,21 +13,19 @@
   "repository": "https://github.com/Frank-Mayer/yahp.git",
   "author": "Frank Mayer <frank.mayer1907@protonmail.com>",
   "license": "MIT",
-  "private": false,
   "dependencies": {
     "@frank-mayer/magic": "^4.0.0",
     "html-minifier": "^4.0.0",
     "jsdom": "^19.0.0",
-    "node-fetch": "^3.2.3"
+    "node-fetch": "^3.2.4"
   },
   "devDependencies": {
-    "@octokit/rest": "^18.12.0",
     "@types/html-minifier": "^4.0.2",
     "@types/jsdom": "^16.2.14",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "eslint": "^8.15.0",
     "eslint-plugin-import": "^2.26.0",
-    "typescript": "^4.7.0-dev.20220423"
+    "typescript": "^4.6.4"
   }
 }

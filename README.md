@@ -5,7 +5,7 @@ Yet another HTML preprocessor (for Node)
 ## Quickstart Guide
 
 ```bash
-yarn add @frank-mayer/yahp
+yarn add -D @frank-mayer/yahp
 ```
 
 ```bash

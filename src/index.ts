@@ -1,13 +1,13 @@
 import { JSDOM } from "jsdom";
 import { minify } from "html-minifier";
-import { process } from "./process";
-import type { IProcess } from "./Elements/IProcess";
-import { processDefine } from "./Elements/processDefine";
-import { processEval } from "./Elements/processEval";
-import { processFetch } from "./Elements/processFetch";
-import { processFor } from "./Elements/processFor";
-import { processIf } from "./Elements/processIf";
-import { processImport } from "./Elements/processImport";
+import { process } from "./process.js";
+import type { IProcess } from "./Elements/IProcess.js";
+import { processDefine } from "./Elements/processDefine.js";
+import { processEval } from "./Elements/processEval.js";
+import { processFetch } from "./Elements/processFetch.js";
+import { processFor } from "./Elements/processFor.js";
+import { processIf } from "./Elements/processIf.js";
+import { processImport } from "./Elements/processImport.js";
 
 const processMap = new Map<string, IProcess>([
   ["DEFINE", processDefine],

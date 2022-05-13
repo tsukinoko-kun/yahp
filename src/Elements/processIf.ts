@@ -1,6 +1,6 @@
-import type { IProcess } from "./IProcess";
-import { evaluate, parseArgs } from "./helpers";
-import { process } from "../process";
+import type { IProcess } from "./IProcess.js";
+import { evaluate, parseArgs } from "./helpers.js";
+import { process } from "../process.js";
 
 /**
  * ```html
