@@ -20,6 +20,8 @@ const processMap = new Map<string, IProcess>([
 
 // eslint-disable-next-line no-undef
 (globalThis as any).processMap = processMap;
+// eslint-disable-next-line no-undef
+(globalThis as any).selector = "DEFINE,SCRIPT[eval],FETCH,FOR,IF,IMPORT";
 
 export const yahp = async(source: string, debug = false) => {
   const dom = new JSDOM(source);

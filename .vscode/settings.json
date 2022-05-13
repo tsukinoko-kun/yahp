@@ -26,5 +26,13 @@
     "**/.yarn": true,
     "**/.pnp.*": true
   },
-  "eslint.nodePath": ".yarn/sdks"
+  "eslint.nodePath": ".yarn/sdks",
+  "files.exclude": {
+    "**/*.js": true,
+    "**/*.d.ts": true,
+    "__test__/*": false,
+    ".yarn/": true,
+    "Elements/": true,
+    "**/.pnp.*": true
+  }
 }

@@ -1,12 +1,10 @@
-import { describe, Enumerable } from "@frank-mayer/magic";
+import { describe } from "@frank-mayer/magic";
 import type { IProcess } from "./Elements/IProcess.js";
 
 declare const processMap: ReadonlyMap<string, IProcess>;
+declare const selector: string;
 
 export const process = async(rootEl: Element, debug = false) => {
-  const selector = Enumerable.from(processMap)
-    .select((x) => x[0])
-    .join(",");
 
   let el: HTMLElement | null;
   while ((el = rootEl.querySelector(selector))) {

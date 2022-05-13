@@ -7,10 +7,20 @@
     <title>Document</title>
   </head>
   <body>
-    <for var="item" of="[1,2,3]">
+    <fetch
+      var="serverData"
+      as="json"
+      from="'https://api.mcsrvstat.us/2/reost.de'"
+    >
       <script eval>
-        return this.item;
+        return (
+          this.serverData.info.html.join("<br>") +
+          this.serverData.motd.html.join("<br>")
+        );
       </script>
-    </for>
+    </fetch>
+    <script src="meep.js">
+      meep();
+    </script>
   </body>
 </html>

@@ -1,5 +1,12 @@
 __test__/
+.vscode/
+.yarn/
 src/
-.gitignore
+.editorconfig
+.eslintrc
 .gitattributes
+.gitignore
+.npmignore
+./.*
+tsconfig.dev.json
 tsconfig.json
