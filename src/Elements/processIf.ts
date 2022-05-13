@@ -1,34 +1,39 @@
-import type { IProcess } from "./IProcess";
-import { varInsert } from "./processHelpers";
+import type { IProcess } from "./IProcess.js";
+import { evaluate, parseArgs } from "./helpers.js";
+import { process } from "../process.js";
 
 /**
  * ```html
- * <if condition="{{Boolean(Math.round(Math.random()))}}">
- *  <div>foobar</div>
+ * <if condition="Boolean(Math.round(Math.random()))">
+ *   <p>true</p>
  * </if>
- *
- * <if not condition="{{Boolean(Math.round(Math.random()))}}">
- *  <div>foobar</div>
- * </if>
+ * <else>
+ *   <p>false</p>
+ * </else>
  * ```
  */
-export const processIf: IProcess = (el, variables, debug: boolean) => {
-  const conditionString = el.getAttribute("condition");
-  if (!conditionString) {
-    throw new Error('Missing "condition" attribute');
+export const processIf: IProcess = async(el, debug: boolean) => {
+  const args = parseArgs(el, "condition");
+
+  if (debug) {
+    console.debug({ args });
   }
 
-  const conditionValue = Boolean(JSON.parse(conditionString));
+  const elseEl = el.nextElementSibling;
 
-  if (el.hasAttribute("not") ? !conditionValue : conditionValue) {
-    if (debug) {
-      console.debug(`if ${conditionString}: true`);
+  if (await evaluate(args.condition)) {
+    await process(el, debug);
+
+    if (elseEl) {
+      elseEl.remove();
     }
-    return varInsert(el.innerHTML, variables);
-  } else {
-    if (debug) {
-      console.debug(`if ${conditionString}: false`);
-    }
-    return Promise.resolve("");
+
+    el.outerHTML = el.innerHTML;
+  } else if (elseEl && elseEl.tagName === "ELSE") {
+    await process(el, debug);
+
+    el.outerHTML = elseEl.innerHTML;
+
+    elseEl.remove();
   }
 };

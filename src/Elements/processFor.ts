@@ -1,46 +1,48 @@
+import type { IProcess } from "./IProcess.js";
+import { evaluate, get, parseArgs, set } from "./helpers.js";
+import { process } from "../process.js";
 import { StringBuilder } from "@frank-mayer/magic";
-import type { IProcess } from "./IProcess";
-import { varInsert } from "./processHelpers";
 
 /**
  * ```html
  * <for var="item" of="[1,2,3]">
- *  <div>{{item}}</div>
+ *   ...
  * </for>
  * ```
  */
-export const processFor: IProcess = async (el, variables, debug: boolean) => {
-  const varName = el.getAttribute("var");
-  if (!varName) {
-    throw new Error('Missing "var" attribute');
+export const processFor: IProcess = async(el, debug: boolean) => {
+  const args = parseArgs(el, "var", "of");
+
+  if (debug) {
+    console.debug({ args });
   }
 
-  const ofString = el.getAttribute("of");
-  if (!ofString) {
-    throw new Error('Missing "of" attribute');
-  }
-  const ofValue = JSON.parse(ofString);
+  const iter = await evaluate(args.of);
 
-  if (!ofValue[Symbol.iterator]) {
-    throw new Error(
-      `"of" attribute must be iterable: ${JSON.stringify(ofValue)}`
-    );
+  if (debug) {
+    console.debug("iterator", iter);
   }
 
-  const newHtml = new StringBuilder();
+  if (!iter || typeof iter[Symbol.iterator] !== "function") {
+    console.error(iter, "is not iterable");
+    throw new Error(`${iter} is not iterable`);
+  }
 
-  let i = 0;
-  for (const item of ofValue) {
-    if (debug) {
-      console.debug("loop iteration", i);
-      console.debug(`define ${varName} = `, item);
+  const temp = get(args.var);
+  const html = new StringBuilder();
+
+  const tempHtml = el.innerHTML;
+  for (const item of iter as Iterable<unknown>) {
+    if (el.innerHTML !== tempHtml) {
+      el.innerHTML = tempHtml;
     }
 
-    variables.set(varName, item);
-    newHtml.append(await varInsert(el.innerHTML, variables));
-
-    i++;
+    set(args.var, item);
+    await process(el, debug);
+    html.appendLine(el.innerHTML);
   }
 
-  return newHtml.toString();
+  set(args.var, temp);
+
+  el.outerHTML = html.toString();
 };

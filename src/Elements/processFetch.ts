@@ -1,46 +1,40 @@
 import fetch from "node-fetch";
-import type { IProcess } from "./IProcess";
-import { varInsert } from "./processHelpers";
+import type { IProcess } from "./IProcess.js";
+import { evaluate, get, parseArgs, set } from "./helpers.js";
+import { process } from "../process.js";
 
 /**
  * ```html
- *  <fetch json var="dog" from="https://dog.ceo/api/breeds/image/random">
- *   <img src="{{dog.message}}" />
+ *  <fetch var="dog" as="json" from="this.dogImgUrl">
+ *    ...
+ *  </fetch>
+ * ```
+ *
+ * ```html
+ *  <fetch var="dog" as="text" from="this.dogImgUrl">
+ *    ...
  *  </fetch>
  * ```
  */
-export const processFetch: IProcess = async (el, variables, debug: boolean) => {
-  const varName = el.getAttribute("var");
-  if (!varName) {
-    throw new Error('Missing "var" attribute');
-  }
-
-  const from = el.getAttribute("from");
-  if (!from) {
-    throw new Error('Missing "from" attribute');
-  }
+export const processFetch: IProcess = async(el, debug: boolean) => {
+  const args = parseArgs(el, "var", "as", "from");
 
   if (debug) {
-    console.debug("processFetch", from);
+    console.debug({ args });
   }
 
-  const response = await fetch(from);
+  const resp = await fetch(await evaluate(args.from));
 
-  if (el.hasAttribute("json")) {
-    const json = await response.json();
-    if (debug) {
-      console.debug("processFetch", json);
-      console.debug(`define ${varName} = `, json);
-    }
-    variables.set(varName, json);
-  } else {
-    const text = await response.text();
-    if (debug) {
-      console.debug("processFetch", text);
-      console.debug(`define ${varName} = ${text}`);
-    }
-    variables.set(varName, text);
+  const value: any = args.as === "json" ? await resp.json() : await resp.text();
+
+  if (debug) {
+    console.debug({ value });
   }
 
-  return varInsert(el.innerHTML, variables);
+  const temp = get(args.var);
+  set(args.var, value);
+  await process(el, debug);
+  set(args.var, temp);
+
+  el.outerHTML = el.innerHTML;
 };

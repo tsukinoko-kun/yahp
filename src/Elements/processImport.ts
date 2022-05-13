@@ -1,8 +1,10 @@
-import type { IProcess } from "./IProcess";
-import { varInsert } from "./processHelpers";
+import type { IProcess } from "./IProcess.js";
+import { get, parseArgs, set } from "./helpers.js";
+import { process } from "../process.js";
 import { resolve } from "path";
 
 const loadModule = (id: string): Promise<any> => {
+  // eslint-disable-next-line no-undef
   if ("require" in globalThis) {
     return Function(`return Promise.resolve(require("${id}"))`)();
   } else {
@@ -12,56 +14,26 @@ const loadModule = (id: string): Promise<any> => {
 
 /**
  * ```html
- *  <require var="{ Octokit }" from="@octokit/rest">
- *
- *  </require>
+ *  <import var="{ Octokit }" from="@octokit/rest">
+ *    ...
+ *  </import>
  * ```
  */
-export const processImport: IProcess = async (
-  el,
-  variables,
-  debug: boolean
-) => {
-  const varName = (el.getAttribute("var") ?? "").trim();
-  if (!varName) {
-    throw new Error('Missing "var" attribute');
-  }
-
-  let from = el.getAttribute("from");
-  if (!from) {
-    throw new Error('Missing "from" attribute');
-  }
-
-  if (from.startsWith(".")) {
-    from = resolve(from);
-  }
+export const processImport: IProcess = async(el, debug: boolean) => {
+  const args = parseArgs(el, "var", "from");
 
   if (debug) {
-    console.debug("processRequire", from);
+    console.debug({ args });
   }
 
-  if (varName.startsWith("{") && varName.endsWith("}")) {
-    const varNames = varName
-      .slice(1, -1)
-      .split(",")
-      .map((x) => x.trim())
-      .filter(Boolean);
-
-    if (varNames.length !== 0) {
-      const module = await loadModule(from);
-      for (const key of varNames) {
-        if (debug) {
-          console.debug(`import { ${key} } from "${from}";`);
-        }
-        variables.set(key, module[key]);
-      }
-    }
-  } else {
-    if (debug) {
-      console.debug(`import ${varName} from "${from}";`);
-    }
-    variables.set(varName, await loadModule(from));
+  if (args.from.startsWith(".")) {
+    args.from = resolve(args.from);
   }
 
-  return varInsert(el.innerHTML, variables);
+  const temp = get(args.var);
+  set(args.var, await loadModule(args.from));
+  await process(el, debug);
+  set(args.var, temp);
+
+  el.outerHTML = el.innerHTML;
 };
