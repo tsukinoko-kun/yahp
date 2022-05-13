@@ -1,6 +1,6 @@
 # yahp
 
-[![yarn 3](https://shields.io/badge/yarn-3-2C8EBB?logo=yarn)](https://yarnpkg.com)
+[![yarn 3](https://shields.io/badge/yarn-PnP-2C8EBB?logo=yarn)](https://yarnpkg.com/features/pnp)
 
 Yet another HTML preprocessor (for Node)
 
