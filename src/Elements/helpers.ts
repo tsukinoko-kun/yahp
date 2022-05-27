@@ -85,6 +85,31 @@ export const set = (key: string, value: any) => {
         throw new Error(`Invalid variable name ${subKey}`);
       }
     }
+  } else if (key.startsWith("[") && key.endsWith("]")) {
+    if (value[Symbol.iterator]) {
+      const subKeys = Enumerable.from(key.slice(1, -1).split(","))
+        .select((x) => x.trim())
+
+      const iterKey = subKeys[Symbol.iterator]();
+      const iterValue: Iterator<any, any, any> = value[Symbol.iterator]();
+
+      let iterKeyResult = iterKey.next();
+      let iterValueResult = iterValue.next();
+
+      while (!iterKeyResult.done && !iterValueResult.done) {
+        if (variableNameRegEx.test(iterKeyResult.value)) {
+          domThis[iterKeyResult.value] = iterValueResult.value;
+        } else {
+          throw new Error(`Invalid variable name ${iterKeyResult.value}`);
+        }
+
+        iterKeyResult = iterKey.next();
+        iterValueResult = iterValue.next();
+      }
+
+    } else {
+      throw new Error(`Value not iterable: ${value}`);
+    }
   } else {
     if (variableNameRegEx.test(key)) {
       domThis[key] = value;
@@ -110,7 +135,6 @@ export const restore = (backupObj: domThisBackupObj)=> {
       delete domThis[key];
     }
   }
-};
 
   for (const [key, value] of backupObj) {
     domThis[key] = value;
