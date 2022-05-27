@@ -54,15 +54,23 @@ Fetch content using http-get-request.
 Parse response as JSON.
 
 ```html
-<fetch var="dog" as="json" from="this.dogImgUrl">
+<fetch var="dog" as="json" from="this.dogDataUrl">
   <!-- ... -->
 </fetch>
 ```
 
-Keep response as string.
+Response as string.
 
 ```html
-<fetch var="dog" as="text" from="this.dogImgUrl">
+<fetch var="dog" as="text" from="this.dogNameUrl">
+  <!-- ... -->
+</fetch>
+```
+
+Response as Data URL
+
+```html
+<fetch var="dog" as="dataURL" from="this.dogImgUrl">
   <!-- ... -->
 </fetch>
 ```

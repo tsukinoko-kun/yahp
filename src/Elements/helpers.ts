@@ -30,22 +30,32 @@ export const AsyncFunction: <T = any>(
 ).constructor;
 
 // eslint-disable-next-line no-unused-vars
-export const parseArgs = <A extends string, T extends { [key in A]: string }>(
+export const parseArgs = <M extends string, O extends string, T extends { [key in M]: string} & {[key in O]?: string }>(
   el: Element,
-  ...args: Array<A>
+  mandatoryParameters: Array<M>,
+  optionalParameters: Array<O> = new Array<O>(),
 ): T => {
   const result = {} as T;
 
-  for (const arg of args) {
+  for (const arg of mandatoryParameters) {
     if (el.hasAttribute(arg)) {
       const value = el.getAttribute(arg)!.trim();
       if (value.length > 0) {
-        result[arg] = value as T[A];
+        result[arg] = value as T[M];
       } else {
         throw new Error(`${arg} is empty in ${describe(el)}`);
       }
     } else {
       throw new Error(`Missing attribute ${arg} in ${describe(el)}`);
+    }
+  }
+
+  for (const arg of optionalParameters) {
+    if (el.hasAttribute(arg)) {
+      const value = el.getAttribute(arg)!.trim();
+      if (value.length > 0) {
+        result[arg] = value as T[O];
+      }
     }
   }
 

@@ -13,7 +13,7 @@ import { process } from "../process.js";
  * ```
  */
 export const processIf: IProcess = async(el, debug: boolean) => {
-  const args = parseArgs(el, "condition");
+  const args = parseArgs(el, ["condition"]);
 
   if (debug) {
     console.debug({ args });

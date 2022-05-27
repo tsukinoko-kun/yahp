@@ -17,15 +17,29 @@ import { process } from "../process.js";
  * ```
  */
 export const processFetch: IProcess = async(el, debug: boolean) => {
-  const args = parseArgs(el, "var", "as", "from");
+  const args = parseArgs(el, ["var", "from"], ["as"]);
 
   if (debug) {
     console.debug({ args });
   }
 
-  const resp = await fetch(await evaluate(args.from));
+  const res = await fetch(await evaluate(args.from));
 
-  const value: any = args.as === "json" ? await resp.json() : await resp.text();
+  const value: any = await (async() => {
+    switch (args.as) {
+    case "json":
+      return res.json();
+    case "text":
+      return res.text();
+    case "dataURL": {
+      const type = res.headers.get("content-type");
+      const buffer = Buffer.from(await res.arrayBuffer());
+      return `data:${type};base64,${buffer.toString("base64")}`;
+    }
+    default:
+      return res;
+    }
+  })()
 
   if (debug) {
     console.debug({ value });

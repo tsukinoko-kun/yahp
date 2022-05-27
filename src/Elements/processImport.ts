@@ -20,7 +20,7 @@ const loadModule = (id: string): Promise<any> => {
  * ```
  */
 export const processImport: IProcess = async(el, debug: boolean) => {
-  const args = parseArgs(el, "var", "from");
+  const args = parseArgs(el, ["var", "from"]);
 
   if (debug) {
     console.debug({ args });

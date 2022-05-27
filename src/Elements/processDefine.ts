@@ -10,7 +10,7 @@ import { process } from "../process.js";
  * ```
  */
 export const processDefine: IProcess = async(el, debug: boolean) => {
-  const args = parseArgs(el, "var", "value");
+  const args = parseArgs(el, ["var", "value"]);
 
   if (debug) {
     console.debug({ args });

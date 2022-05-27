@@ -11,7 +11,7 @@ import { StringBuilder } from "@frank-mayer/magic";
  * ```
  */
 export const processFor: IProcess = async(el, debug: boolean) => {
-  const args = parseArgs(el, "var", "of");
+  const args = parseArgs(el, ["var", "of"]);
 
   if (debug) {
     console.debug({ args });
