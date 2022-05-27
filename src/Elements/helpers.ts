@@ -71,7 +71,7 @@ export const evaluate = (x: string, statement = true) =>
     ? AsyncFunction(`return (${x})`).call(domThis)
     : AsyncFunction(x).call(domThis);
 
-const variableNameRegEx = /^[a-zßöäü$][a-zßöäü$]*$/iu;
+const variableNameRegEx = /^[a-zßöäü$][0-9a-zßöäü$]*$/iu;
 export const set = (key: string, value: any) => {
   if (key.startsWith("{") && key.endsWith("}")) {
     const subKeys = Enumerable.from(key.slice(1, -1).split(","))
