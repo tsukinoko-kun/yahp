@@ -1,7 +1,7 @@
 {
   "name": "@frank-mayer/yahp",
   "packageManager": "yarn@3.2.0",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Yet another HTML preprocessor",
   "main": "index.js",
   "type": "module",
