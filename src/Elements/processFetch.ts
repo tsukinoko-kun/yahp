@@ -20,7 +20,7 @@ export const processFetch: IProcess = async(el, debug: boolean) => {
   const args = parseArgs(el, ["var", "from"], ["as"]);
 
   if (debug) {
-    console.debug({ args });
+    console.debug("Arguments", args);
   }
 
   const res = await fetch(await evaluate(args.from));
@@ -42,7 +42,7 @@ export const processFetch: IProcess = async(el, debug: boolean) => {
   })()
 
   if (debug) {
-    console.debug({ value });
+    console.debug("Evaluated to", value);
   }
 
   const temp = backup();

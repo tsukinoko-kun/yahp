@@ -16,12 +16,17 @@ export const processIf: IProcess = async(el, debug: boolean) => {
   const args = parseArgs(el, ["condition"]);
 
   if (debug) {
-    console.debug({ args });
+    console.debug("Arguments", args);
   }
 
   const elseEl = el.nextElementSibling;
 
-  if (await evaluate(args.condition)) {
+  const evalCond = await evaluate(args.condition)
+  if (debug) {
+    console.debug("Evaluated to", evalCond);
+  }
+
+  if (evalCond) {
     await process(el, debug);
 
     if (elseEl) {

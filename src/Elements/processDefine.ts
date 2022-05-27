@@ -13,13 +13,13 @@ export const processDefine: IProcess = async(el, debug: boolean) => {
   const args = parseArgs(el, ["var", "value"]);
 
   if (debug) {
-    console.debug({ args });
+    console.debug("Arguments", args);
   }
 
   const value = await evaluate(args.value);
 
   if (debug) {
-    console.debug({ value });
+    console.debug("Evaluated to", value);
   }
 
   const temp = backup();

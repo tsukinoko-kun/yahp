@@ -10,7 +10,6 @@ export const process = async(rootEl: Element, debug = false) => {
   while ((el = rootEl.querySelector(selector))) {
     if (debug) {
       console.debug(`Processing ${describe(el)}`);
-      // console.debug("var", getDomThis());
     }
 
     const fun = processMap.get(el.tagName)!;

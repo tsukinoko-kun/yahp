@@ -23,7 +23,7 @@ export const processImport: IProcess = async(el, debug: boolean) => {
   const args = parseArgs(el, ["var", "from"]);
 
   if (debug) {
-    console.debug({ args });
+    console.debug("Arguments", args);
   }
 
   if (args.from.startsWith(".")) {

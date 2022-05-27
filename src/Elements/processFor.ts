@@ -14,13 +14,13 @@ export const processFor: IProcess = async(el, debug: boolean) => {
   const args = parseArgs(el, ["var", "of"]);
 
   if (debug) {
-    console.debug({ args });
+    console.debug("Arguments", args);
   }
 
   const iter = await evaluate(args.of);
 
   if (debug) {
-    console.debug("iterator", iter);
+    console.debug("Iterator", iter);
   }
 
   if (!iter || typeof iter[Symbol.iterator] !== "function") {

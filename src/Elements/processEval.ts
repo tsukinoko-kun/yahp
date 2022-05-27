@@ -17,7 +17,7 @@ export const processEval: IProcess = async(el, debug: boolean) => {
   const value = await evaluate((el as HTMLScriptElement).text, false);
 
   if (debug) {
-    console.debug({ value });
+    console.debug("Evaluated to", value);
   }
 
   if (typeof value === "object") {
