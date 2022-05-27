@@ -31,7 +31,15 @@ export const processImport: IProcess = async(el, debug: boolean) => {
   }
 
   const temp = get(args.var);
-  set(args.var, await loadModule(args.from));
+
+  const mod = await loadModule(args.from);
+
+  if (mod.default) {
+    set(args.var, { ...mod.default, ...mod });
+  } else {
+    set(args.var, mod);
+  }
+
   await process(el, debug);
   set(args.var, temp);
 
