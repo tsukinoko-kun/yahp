@@ -38,7 +38,6 @@ __metadata:
     "@frank-mayer/magic": ^4.0.0
     "@types/html-minifier": ^4.0.2
     "@types/jsdom": ^16.2.14
-    "@types/node": ^17.0.33
     "@typescript-eslint/eslint-plugin": ^5.23.0
     "@typescript-eslint/parser": ^5.23.0
     eslint: ^8.15.0
@@ -148,7 +147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^17.0.33":
+"@types/node@npm:*":
   version: 17.0.33
   resolution: "@types/node@npm:17.0.33"
   checksum: 6620652cc89ce125e1162e060ec4608c25b3635185e3e5dcaae4ed09e4770dc8bf168ba48bcd7059a1a56087a05000d7ed562e81aea7b6a512e2b13d4409c6b6
