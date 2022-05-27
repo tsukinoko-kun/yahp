@@ -35,5 +35,7 @@ export const processIf: IProcess = async(el, debug: boolean) => {
     el.outerHTML = elseEl.innerHTML;
 
     elseEl.remove();
+  } else {
+    el.remove();
   }
 };
