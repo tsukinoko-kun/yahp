@@ -94,25 +94,25 @@ export const set = (key: string, value: any) => {
   }
 };
 
-export const get = (key: string) => {
-  if (key.startsWith("{") && key.endsWith("}")) {
-    const subKeys = Enumerable.from(key.slice(1, -1).split(","))
-      .select((x) => x.trim())
-      .where((x) => x.length > 0);
+export type domThisBackupObj = Map<string,any>;
 
-    const result = {} as { [key: string]: any };
-    for (const subKey of subKeys) {
-      if (variableNameRegEx.test(subKey)) {
-        result[subKey] = domThis[subKey];
-      }
-    }
-    return result;
-  } else {
-    if (variableNameRegEx.test(key)) {
-      return domThis[key];
-    }
+export const backup = (): domThisBackupObj=> {
+  const backupMap = new Map<string,any>();
+  for (const key of Object.getOwnPropertyNames(domThis)) {
+    backupMap.set(key, domThis[key]);
+  }
+  return backupMap;
+}
 
-    throw new Error(`Invalid variable name ${key}`);
+export const restore = (backupObj: domThisBackupObj)=> {
+  for (const key of Object.getOwnPropertyNames(domThis)) {
+    if (!backupObj.has(key)) {
+      delete domThis[key];
+    }
   }
 };
 
+  for (const [key, value] of backupObj) {
+    domThis[key] = value;
+  }
+}

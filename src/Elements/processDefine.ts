@@ -1,5 +1,5 @@
 import type { IProcess } from "./IProcess.js";
-import { evaluate, get, parseArgs, set } from "./helpers.js";
+import { backup, evaluate, parseArgs, restore, set } from "./helpers.js";
 import { process } from "../process.js";
 
 /**
@@ -22,10 +22,10 @@ export const processDefine: IProcess = async(el, debug: boolean) => {
     console.debug({ value });
   }
 
-  const temp = get(args.var);
+  const temp = backup();
   set(args.var, value);
   await process(el, debug);
-  set(args.var, temp);
+  restore(temp);
 
   el.outerHTML = el.innerHTML;
 };

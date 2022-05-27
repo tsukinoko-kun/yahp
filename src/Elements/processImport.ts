@@ -1,5 +1,5 @@
 import type { IProcess } from "./IProcess.js";
-import { get, parseArgs, set } from "./helpers.js";
+import { backup, parseArgs, restore, set } from "./helpers.js";
 import { process } from "../process.js";
 import { resolve } from "path";
 
@@ -30,7 +30,7 @@ export const processImport: IProcess = async(el, debug: boolean) => {
     args.from = resolve(args.from);
   }
 
-  const temp = get(args.var);
+  const temp = backup();
 
   const mod = await loadModule(args.from);
 
@@ -41,7 +41,7 @@ export const processImport: IProcess = async(el, debug: boolean) => {
   }
 
   await process(el, debug);
-  set(args.var, temp);
+  restore(temp);
 
   el.outerHTML = el.innerHTML;
 };

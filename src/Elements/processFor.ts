@@ -1,5 +1,5 @@
 import type { IProcess } from "./IProcess.js";
-import { evaluate, get, parseArgs, set } from "./helpers.js";
+import { backup, evaluate, parseArgs, restore, set } from "./helpers.js";
 import { process } from "../process.js";
 import { StringBuilder } from "@frank-mayer/magic";
 
@@ -28,7 +28,7 @@ export const processFor: IProcess = async(el, debug: boolean) => {
     throw new Error(`${iter} is not iterable`);
   }
 
-  const temp = get(args.var);
+  const temp = backup();
   const html = new StringBuilder();
 
   const tempHtml = el.innerHTML;
@@ -42,7 +42,7 @@ export const processFor: IProcess = async(el, debug: boolean) => {
     html.appendLine(el.innerHTML);
   }
 
-  set(args.var, temp);
+  restore( temp);
 
   el.outerHTML = html.toString();
 };
